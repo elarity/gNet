@@ -1,10 +1,10 @@
 package core
 
 import (
-	"testing"
-	"time"
 	"fmt"
 	"net"
+	"testing"
+	"time"
 )
 
 func TestSvr(t *testing.T) {
@@ -19,12 +19,12 @@ func TestSvr(t *testing.T) {
 			fmt.Printf("net.Dial err=%+v", err)
 			return
 		}
-		writeContentLength, err := clientTcpConn.Write([]byte("hello world"))
-		if err !=nil {
+		writeContentLength, err := clientTcpConn.Write([]byte("hello-world-hello-world"))
+		if err != nil {
 			fmt.Printf("clientTcpConn.Write err=%+v", err)
 			return
 		}
-		buffer :=make([]byte, 500)
+		buffer := make([]byte, 4)
 		readContentLenth, err := clientTcpConn.Read(buffer)
 		if err != nil {
 			fmt.Printf("clientTcpConn.Read error=%+v", err)

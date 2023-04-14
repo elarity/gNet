@@ -1,31 +1,30 @@
 package core
 
 import (
-	"github.com/elarity/gNet/base"
 	"fmt"
-	"time"
-	"net"
 	"github.com/elarity/gNet/iface"
+	"net"
+	"time"
 )
 
 type Server struct {
 	IpAddress  string
-	Port 	   int
+	Port       int
 	ServerName string
 	NetFamily  string
 }
 
 /*
-	Start()
-	Stop()
-	Serv()
+Start()
+Stop()
+Serv()
 */
 func (svr *Server) Start() {
 	fmt.Println("svr *Server.Start")
 	// 单独开一个新的goroutine去处理...
 	go func() {
 		/*
-		golang标准库下创建tcp socket的流程也是固定的...
+			golang标准库下创建tcp socket的流程也是固定的...
 		*/
 		tcpAddr, err := net.ResolveTCPAddr(svr.NetFamily, fmt.Sprintf("%s:%d", svr.IpAddress, svr.Port))
 		if err != nil {
@@ -44,13 +43,18 @@ func (svr *Server) Start() {
 				fmt.Printf("Accept.Tcp err=%+v", err)
 				continue
 			}
+
+			tcpConn := InitTcpConn()
+			tcpConn.Fire()
+
 			for {
-				buffer := make([]byte, 500)
+				buffer := make([]byte, 8)
 				readContentLength, err := tcpConnection.Read(buffer)
 				if err != nil {
 					fmt.Printf("tcpConnection.Read err=%+v", err)
 					continue
 				}
+				fmt.Println("Message from client:", string(buffer), " length:", readContentLength)
 				_, err = tcpConnection.Write(buffer[:readContentLength])
 				if err != nil {
 					fmt.Printf("tcpConnection.Write err=%+v", err)
@@ -76,12 +80,12 @@ func (svr *Server) Serv() {
 
 /*
  * @desc : 初始化一个服务器实例
-*/
+ */
 func InitServer() iface.IServ {
 	svr := Server{
-		IpAddress: "0.0.0.0",
-		Port: 9191,
-		NetFamily: "tcp4",
+		IpAddress:  "0.0.0.0",
+		Port:       9191,
+		NetFamily:  "tcp4",
 		ServerName: "gNet-core",
 	}
 	return &svr
