@@ -54,21 +54,21 @@ func (svr *Server) Start() {
 
 			time.Sleep(1000 * time.Second)
 			/*
-			for {
-				buffer := make([]byte, 8)
-				readContentLength, err := tcpConnection.Read(buffer)
-				if err != nil {
-					fmt.Printf("tcpConnection.Read err=%+v", err)
-					continue
+				for {
+					buffer := make([]byte, 8)
+					readContentLength, err := tcpConnection.Read(buffer)
+					if err != nil {
+						fmt.Printf("tcpConnection.Read err=%+v", err)
+						continue
+					}
+					fmt.Println("Message from client:", string(buffer), " length:", readContentLength)
+					_, err = tcpConnection.Write(buffer[:readContentLength])
+					if err != nil {
+						fmt.Printf("tcpConnection.Write err=%+v", err)
+						continue
+					}
 				}
-				fmt.Println("Message from client:", string(buffer), " length:", readContentLength)
-				_, err = tcpConnection.Write(buffer[:readContentLength])
-				if err != nil {
-					fmt.Printf("tcpConnection.Write err=%+v", err)
-					continue
-				}
-			}
-			 */
+			*/
 		}
 	}()
 }
@@ -89,7 +89,7 @@ func (svr *Server) Serv() {
 /*
  * @desc : 初始化一个服务器实例
  */
-func InitServer() iface.IServ {
+func InitServer() iface.Serv {
 	svr := Server{
 		IpAddress:  "0.0.0.0",
 		Port:       9191,

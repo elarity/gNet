@@ -52,12 +52,12 @@ func (conn *TcpConn) Fire() {
 	fmt.Println("over over...")
 }
 
-func InitTcpConn(rawTcpConnFd *net.TCPConn, handler iface.TcpConnHandler) iface.ItcpConn {
+func InitTcpConn(rawTcpConnFd *net.TCPConn, handler iface.TcpConnHandler) iface.TcpConn {
 	tcpConn := &TcpConn{
 		RawTcpConnFd: rawTcpConnFd,
-		handler: handler,
+		handler:      handler,
 	}
 	return tcpConn
 }
 
-var _ iface.ItcpConn = (*TcpConn)(nil)
+var _ iface.TcpConn = (*TcpConn)(nil)

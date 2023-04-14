@@ -4,7 +4,7 @@ import (
 	"net"
 )
 
-type ItcpConn interface {
+type TcpConn interface {
 	Fire()
 	Extinguish()
 }
