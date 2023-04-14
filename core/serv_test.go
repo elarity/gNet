@@ -12,7 +12,7 @@ func TestSvr(t *testing.T) {
 
 	go func() {
 		// 保证svr一定要在client运行前ready
-		time.Sleep(3 * time.Second)
+		time.Sleep(1 * time.Second)
 		fmt.Println("tcp-client net.Dial")
 		clientTcpConn, err := net.Dial("tcp", "127.0.0.1:9191")
 		if err != nil {

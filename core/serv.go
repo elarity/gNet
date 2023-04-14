@@ -14,6 +14,11 @@ type Server struct {
 	NetFamily  string
 }
 
+func tcpConnHandler(tcpRawConn *net.TCPConn, clientData []byte) error {
+	fmt.Println("tcp connection callback, content is=", string(clientData), ", length=", len(clientData))
+	return nil
+}
+
 /*
 Start()
 Stop()
@@ -44,9 +49,11 @@ func (svr *Server) Start() {
 				continue
 			}
 
-			tcpConn := InitTcpConn()
+			tcpConn := InitTcpConn(tcpConnection, tcpConnHandler)
 			tcpConn.Fire()
 
+			time.Sleep(1000 * time.Second)
+			/*
 			for {
 				buffer := make([]byte, 8)
 				readContentLength, err := tcpConnection.Read(buffer)
@@ -61,6 +68,7 @@ func (svr *Server) Start() {
 					continue
 				}
 			}
+			 */
 		}
 	}()
 }
