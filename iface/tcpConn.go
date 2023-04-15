@@ -11,4 +11,4 @@ type TcpConn interface {
 	GetRawTcpConnFd() *net.TCPConn
 }
 
-type TcpConnHandler func(tcpRawConn *net.TCPConn, clientData []byte) error
+//type TcpConnHandler func(tcpRawConn *net.TCPConn, clientData []byte) error
