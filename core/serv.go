@@ -12,6 +12,7 @@ type Server struct {
 	Port       int
 	ServerName string
 	NetFamily  string
+	Router     iface.Router
 }
 
 func tcpConnHandler(tcpRawConn *net.TCPConn, clientData []byte) error {
@@ -49,10 +50,10 @@ func (svr *Server) Start() {
 				continue
 			}
 
-			tcpConn := InitTcpConn(tcpConnection, tcpConnHandler)
+			tcpConn := InitTcpConn(tcpConnection, svr.Router)
 			tcpConn.Fire()
 
-			time.Sleep(1000 * time.Second)
+			//time.Sleep(1000 * time.Second)
 			/*
 				for {
 					buffer := make([]byte, 8)
@@ -77,6 +78,10 @@ func (svr *Server) Stop() {
 	fmt.Println("svr *Server.Stop")
 }
 
+func (svr *Server) AddRouter(router iface.Router) {
+	svr.Router = router
+}
+
 func (svr *Server) Serv() {
 	svr.Start()
 
@@ -95,6 +100,9 @@ func InitServer() iface.Serv {
 		Port:       9191,
 		NetFamily:  "tcp4",
 		ServerName: "gNet-core",
+		Router:     nil,
 	}
 	return &svr
 }
+
+var _ iface.Serv = (*Server)(nil)

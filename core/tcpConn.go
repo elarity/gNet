@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"github.com/elarity/gNet/core/request"
 	"github.com/elarity/gNet/iface"
 	"net"
 )
@@ -14,7 +15,11 @@ type TcpConn struct {
 	UniqueID     uint64
 	RawTcpConnFd *net.TCPConn
 	Status       int
-	handler      iface.TcpConnHandler
+	Router       iface.Router
+}
+
+func (conn *TcpConn) GetRouter() iface.Router {
+	return conn.Router
 }
 
 func (conn *TcpConn) Extinguish() {
@@ -45,17 +50,29 @@ func (conn *TcpConn) Fire() {
 
 			}
 			fmt.Println("client data length=", clientDataLength)
-			conn.handler(conn.RawTcpConnFd, clientDataBuffer)
+
+			// 构造request对象
+			tcpRequest := request.Tcp{}
+			tcpRequest.SetConn(conn)
+			tcpRequest.SetClientData(clientDataBuffer)
+			go func(req iface.Request) {
+				//conn := req.GetConn()
+				//router := conn.GetRouter()
+				conn.Router.HandlerBefore(req)
+				conn.Router.HandlerFire(req)
+				conn.Router.HandlerAfter(req)
+			}(&tcpRequest)
 		}
 	}()
 
 	fmt.Println("over over...")
 }
 
-func InitTcpConn(rawTcpConnFd *net.TCPConn, handler iface.TcpConnHandler) iface.TcpConn {
+func InitTcpConn(rawTcpConnFd *net.TCPConn, router iface.Router) iface.TcpConn {
 	tcpConn := &TcpConn{
 		RawTcpConnFd: rawTcpConnFd,
-		handler:      handler,
+		Status:       TcpConnOpenStatus,
+		Router:       router,
 	}
 	return tcpConn
 }

@@ -7,4 +7,5 @@ type Serv interface {
 	Start()
 	Stop()
 	Serv()
+	AddRouter(router Router)
 }

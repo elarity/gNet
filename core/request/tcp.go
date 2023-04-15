@@ -11,8 +11,16 @@ type Tcp struct {
 	data []byte
 }
 
+func (t *Tcp) SetConn(conn iface.TcpConn) {
+	t.conn = conn
+}
+
 func (t *Tcp) GetConn() iface.TcpConn {
 	return t.conn
+}
+
+func (t *Tcp) SetClientData(data []byte) {
+	t.data = data
 }
 
 func (t *Tcp) GetClientData() []byte {
