@@ -96,10 +96,10 @@ func (svr *Server) Serv() {
  */
 func InitServer() iface.Serv {
 	svr := Server{
-		IpAddress:  "0.0.0.0",
-		Port:       9191,
-		NetFamily:  "tcp4",
-		ServerName: "gNet-core",
+		IpAddress:  ConfInstance.IpAddress,
+		Port:       ConfInstance.Port,
+		NetFamily:  ConfInstance.NetFamily,
+		ServerName: ConfInstance.ServerName,
 		Router:     nil,
 	}
 	return &svr
