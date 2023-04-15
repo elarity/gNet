@@ -18,6 +18,10 @@ type TcpConn struct {
 	Router       iface.Router
 }
 
+func (conn *TcpConn) GetRawTcpConnFd() *net.TCPConn {
+	return conn.RawTcpConnFd
+}
+
 func (conn *TcpConn) GetRouter() iface.Router {
 	return conn.Router
 }
