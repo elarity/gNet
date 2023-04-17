@@ -50,8 +50,12 @@ func (svr *Server) Start() {
 				continue
 			}
 
-			tcpConn := InitTcpConn(tcpConnection, svr.Router)
-			tcpConn.Fire()
+			// accept后，使用goroutine去做这些事，考虑下不用goroutine会发生什么事
+			go func(tcpConnection *net.TCPConn) {
+
+				tcpConn := InitTcpConn(tcpConnection, svr.Router)
+				tcpConn.Fire()
+			}(tcpConnection)
 
 			//time.Sleep(1000 * time.Second)
 			/*
