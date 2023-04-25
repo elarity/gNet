@@ -15,7 +15,7 @@ func main() {
 }
 
 type TestRouter struct {
-	iface.Router
+	core.MainRouter
 }
 
 func (r *TestRouter) HandlerBefore(request iface.Request) {

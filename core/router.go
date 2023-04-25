@@ -1,6 +1,9 @@
 package core
 
-import "github.com/elarity/gNet/iface"
+import (
+	"fmt"
+	"github.com/elarity/gNet/iface"
+)
 
 type MainRouter struct{}
 
@@ -11,7 +14,7 @@ HandlerAfter()
 */
 
 func (r *MainRouter) HandlerBefore(req iface.Request) {
-
+	fmt.Println("okokkkkk")
 }
 
 func (r *MainRouter) HandlerFire(req iface.Request) {
