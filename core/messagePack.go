@@ -7,12 +7,12 @@ import (
 )
 
 /*
-   一个pack的组成是下面这样的：
-   | 4字节，放整个pack的字节长度 | 8字节，放msgid | 这部分是客户端请求参数 |
+一个pack的组成是下面这样的：
+| 4字节，放整个pack的字节长度 | 8字节，放msgid | 这部分是客户端请求参数 |
 */
 type MessagePack struct{}
 
-func (mp *MessagePack) GetMessagePackLength() uint64 {
+func (mp *MessagePack) GetMessagePackHeaderLength() uint64 {
 	// 4字节放长度数字，8字节mid（uint64）
 	return 12
 }
