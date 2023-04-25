@@ -20,7 +20,7 @@ func main() {
 
 		msgPack := core.InitMessagePack()
 
-		msg1 := core.InitMessage(1, []byte{'h', 'e', 'l', 'l', '9'})
+		msg1 := core.InitMessage(1, []byte{'h', 'e', 'l', 'l', '9', 'l', 'a'})
 		msg1Byte, _ := msgPack.Pack(msg1)
 		//writeContentLength, err := clientTcpConn.Write(msg1Byte)
 		//fmt.Println("send to svr length=", writeContentLength)
