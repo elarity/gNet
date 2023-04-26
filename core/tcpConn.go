@@ -103,7 +103,8 @@ func (conn *TcpConn) Fire() {
 			// 构造request对象
 			tcpRequest := request.Tcp{}
 			tcpRequest.SetConn(conn)
-			tcpRequest.SetClientData(bodyMessage)
+			//tcpRequest.SetClientData(bodyMessage)
+			tcpRequest.SetMessage(headerMessage)
 			go func(req iface.Request) {
 				//conn := req.GetConn()
 				//router := conn.GetRouter()

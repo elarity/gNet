@@ -19,7 +19,7 @@ type TestRouter struct {
 }
 
 func (r *TestRouter) HandlerBefore(request iface.Request) {
-	fmt.Println("HandlerBefore")
+	fmt.Println("HandlerBefore:", request.GetMessageId())
 	_, err := request.GetConn().GetRawTcpConnFd().Write([]byte("HandlerBefore fire\n"))
 	if err != nil {
 		fmt.Println(err)
@@ -27,7 +27,7 @@ func (r *TestRouter) HandlerBefore(request iface.Request) {
 }
 
 func (r *TestRouter) HandlerFire(request iface.Request) {
-	fmt.Println("HandlerFire")
+	fmt.Println("HandlerFire:", request.GetMessageId())
 	_, err := request.GetConn().GetRawTcpConnFd().Write([]byte("HandlerFire fire\n"))
 	if err != nil {
 		fmt.Println(err)
@@ -35,7 +35,7 @@ func (r *TestRouter) HandlerFire(request iface.Request) {
 }
 
 func (r *TestRouter) HandlerAfter(request iface.Request) {
-	fmt.Println("HandlerAfter")
+	fmt.Println("HandlerAfter:", request.GetMessageId())
 	_, err := request.GetConn().GetRawTcpConnFd().Write([]byte("HandlerAfter fire\n"))
 	if err != nil {
 		fmt.Println(err)
