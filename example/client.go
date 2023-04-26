@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/elarity/gNet/core"
+	"io"
 	"net"
 	"time"
 )
@@ -38,16 +39,33 @@ func main() {
 				fmt.Printf("clientTcpConn.Write err=%+v", err)
 				return
 			}
-			buffer := make([]byte, 5120)
-			fmt.Println("tcp-client net.Dial Read")
-			readContentLenth, err := clientTcpConn.Read(buffer)
-			fmt.Println("tcp-client net.Dial Read Over")
+		*/
+
+		messagePack := core.InitMessagePack()
+		buffer := make([]byte, messagePack.GetMessagePackHeaderLength())
+		readLength, err := io.ReadFull(clientTcpConn, buffer)
+		//readContentLenth, err := clientTcpConn.Read(buffer)
+		//fmt.Println("tcp-client net.Dial Read Over")
+		if err != nil {
+			fmt.Printf("clientTcpConn.Read error=%+v | readLength=%d", err, readLength)
+			return
+		}
+		headerMessage, err := messagePack.UnPack(buffer)
+		if err != nil {
+			fmt.Printf("clientTcpConn.Read error=%+v | readLength=%d", err, readLength)
+			return
+		}
+		if headerMessage.GetMessageLength() > 0 {
+			buffer := make([]byte, headerMessage.GetMessageLength())
+			readLength, err := io.ReadFull(clientTcpConn, buffer)
 			if err != nil {
-				fmt.Printf("clientTcpConn.Read error=%+v", err)
+				fmt.Printf("clientTcpConn.Read error=%+v | readLength=%d", err, readLength)
 				return
 			}
-			fmt.Printf("Message From Svr:%s, readContentLenth=%d, writeContentLength=%d\n", buffer, readContentLenth, writeContentLength)
-		*/
+			headerMessage.SetMessageData(buffer)
+		}
+		fmt.Printf("Message From Svr:msg id=%d, buffer=%d\n", headerMessage.GetMid(), string(headerMessage.GetMessageData()))
+		//fmt.Printf("Message From Svr:%s, readContentLenth=%d, writeContentLength=%d\n", buffer, readContentLenth, writeContentLength)
 
 		time.Sleep(1 * time.Second)
 	}
