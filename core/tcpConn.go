@@ -1,6 +1,7 @@
 package core
 
 import (
+	"errors"
 	"fmt"
 	"github.com/elarity/gNet/core/request"
 	"github.com/elarity/gNet/iface"
@@ -116,6 +117,25 @@ func (conn *TcpConn) Fire() {
 	}()
 
 	fmt.Println("over over...")
+}
+
+func (conn *TcpConn) Write(msgId uint64, data []byte) error {
+	if TcpConnCloseStatus == conn.Status {
+		return errors.New("tcp connection is closed.")
+	}
+	message := InitMessage(msgId, data)
+	dataPack := InitMessagePack()
+	dataPackBytes, err := dataPack.Pack(message)
+	if err != nil {
+		conn.Status = TcpConnCloseStatus
+		return err
+	}
+	_, err = conn.RawTcpConnFd.Write(dataPackBytes)
+	if err != nil {
+		conn.Status = TcpConnCloseStatus
+		return err
+	}
+	return nil
 }
 
 func InitTcpConn(rawTcpConnFd *net.TCPConn, router iface.Router) iface.TcpConn {
